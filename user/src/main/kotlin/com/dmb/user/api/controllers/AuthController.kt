@@ -1,7 +1,10 @@
 package com.dmb.user.api.controllers
 
+import com.dmb.user.api.dto.AuthenticatedUserDto
+import com.dmb.user.api.dto.LoginRequest
 import com.dmb.user.api.dto.RegisterRequest
 import com.dmb.user.api.dto.UserDto
+import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
 import com.dmb.user.service.auth.AuthService
 import jakarta.validation.Valid
@@ -23,5 +26,15 @@ class AuthController(private val authService: AuthService) {
             username = body.username,
             password = body.password
         ).toUserDto()
+    }
+
+    @PostMapping("/login")
+    fun login(
+        @RequestBody body: LoginRequest
+    ): AuthenticatedUserDto {
+        return authService.login(
+            email = body.email,
+            password = body.password
+        ).toAuthenticatedUserDto()
     }
 }

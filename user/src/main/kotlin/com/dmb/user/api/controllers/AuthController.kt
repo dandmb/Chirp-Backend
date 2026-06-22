@@ -2,6 +2,7 @@ package com.dmb.user.api.controllers
 
 import com.dmb.user.api.dto.AuthenticatedUserDto
 import com.dmb.user.api.dto.LoginRequest
+import com.dmb.user.api.dto.RefreshRequest
 import com.dmb.user.api.dto.RegisterRequest
 import com.dmb.user.api.dto.UserDto
 import com.dmb.user.api.mappers.toAuthenticatedUserDto
@@ -36,5 +37,14 @@ class AuthController(private val authService: AuthService) {
             email = body.email,
             password = body.password
         ).toAuthenticatedUserDto()
+    }
+
+    @PostMapping("/refresh")
+    fun refresh(
+        @RequestBody body: RefreshRequest
+    ): AuthenticatedUserDto {
+        return authService
+            .refresh(body.refreshToken)
+            .toAuthenticatedUserDto()
     }
 }

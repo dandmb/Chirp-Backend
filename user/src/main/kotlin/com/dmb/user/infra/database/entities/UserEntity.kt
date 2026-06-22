@@ -1,4 +1,4 @@
-package com.dmb.user.domain.infra.database.entities
+package com.dmb.user.infra.database.entities
 
 
 import com.dmb.user.domain.model.UserId

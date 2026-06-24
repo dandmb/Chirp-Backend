@@ -8,15 +8,21 @@ import com.dmb.user.api.dto.UserDto
 import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
 import com.dmb.user.service.auth.AuthService
+import com.dmb.user.service.auth.EmailVerificationService
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/auth")
-class AuthController(private val authService: AuthService) {
+class AuthController(
+    private val authService: AuthService,
+    private val emailVerificationService: EmailVerificationService
+) {
 
     @PostMapping("/register")
     fun register(
@@ -55,5 +61,11 @@ class AuthController(private val authService: AuthService) {
         authService.logout(body.refreshToken)
     }
 
+    @GetMapping("/verify")
+    fun verifyEmail(
+        @RequestParam token: String
+    ) {
+        emailVerificationService.verifyEmail(token)
+    }
 
 }

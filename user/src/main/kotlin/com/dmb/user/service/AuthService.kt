@@ -15,6 +15,7 @@ import com.dmb.user.infra.database.mappers.toUser
 import com.dmb.user.infra.database.repositories.RefreshTokenRepository
 import com.dmb.user.infra.database.repositories.UserRepository
 import com.dmb.user.infra.security.PasswordEncoder
+import com.dmb.user.service.EmailVerificationService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

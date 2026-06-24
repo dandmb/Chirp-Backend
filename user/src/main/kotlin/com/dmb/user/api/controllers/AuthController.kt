@@ -8,7 +8,7 @@ import com.dmb.user.api.dto.UserDto
 import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
 import com.dmb.user.service.auth.AuthService
-import com.dmb.user.service.auth.EmailVerificationService
+import com.dmb.user.service.EmailVerificationService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

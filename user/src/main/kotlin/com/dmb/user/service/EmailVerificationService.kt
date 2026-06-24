@@ -1,4 +1,4 @@
-package com.dmb.user.service.auth
+package com.dmb.user.service
 
 import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.UserNotFoundException

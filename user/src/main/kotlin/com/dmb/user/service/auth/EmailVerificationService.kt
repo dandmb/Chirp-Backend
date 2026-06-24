@@ -1,6 +1,5 @@
 package com.dmb.user.service.auth
 
-
 import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.UserNotFoundException
 import com.dmb.user.domain.model.EmailVerificationToken

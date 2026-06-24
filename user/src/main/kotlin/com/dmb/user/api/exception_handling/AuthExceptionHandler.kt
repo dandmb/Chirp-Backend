@@ -1,5 +1,6 @@
 package com.dmb.user.api.exception_handling
 
+import com.dmb.user.domain.exception.EmailNotVerifiedException
 import com.dmb.user.domain.exception.InvalidCredentialsException
 import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.UserAlreadyExistsException
@@ -47,6 +48,15 @@ class AuthExceptionHandler {
         e: InvalidTokenException
     ) = mapOf(
         "code" to "INVALID_TOKEN",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(EmailNotVerifiedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onEmailNotVerified(
+        e: EmailNotVerifiedException
+    ) = mapOf(
+        "code" to "EMAIL_NOT_VERIFIED",
         "message" to e.message
     )
 

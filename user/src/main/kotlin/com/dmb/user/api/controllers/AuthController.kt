@@ -10,6 +10,7 @@ import com.dmb.user.api.dto.ResetPasswordRequest
 import com.dmb.user.api.dto.UserDto
 import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
+import com.dmb.user.infra.rate_limiting.EmailRateLimiter
 import com.dmb.user.service.auth.AuthService
 import com.dmb.user.service.EmailVerificationService
 import com.dmb.user.service.PasswordResetService
@@ -26,7 +27,8 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(
     private val authService: AuthService,
     private val emailVerificationService: EmailVerificationService,
-    private val passwordResetService: PasswordResetService
+    private val passwordResetService: PasswordResetService,
+    private val emailRateLimiter: EmailRateLimiter
 ) {
 
     @PostMapping("/register")
@@ -96,6 +98,17 @@ class AuthController(
         @Valid @RequestBody body: ChangePasswordRequest
     ) {
         // TODO: Extract request user ID and call service
+    }
+
+    @PostMapping("/resend-verification")
+    fun resendVerification(
+        @Valid @RequestBody body: EmailRequest
+    ) {
+        emailRateLimiter.withRateLimit(
+            email = body.email
+        ) {
+            emailVerificationService.resendVerificationEmail(body.email)
+        }
     }
 
 }

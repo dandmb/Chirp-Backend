@@ -11,6 +11,7 @@ import com.dmb.user.api.dto.ResetPasswordRequest
 import com.dmb.user.api.dto.UserDto
 import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
+import com.dmb.user.api.util.requestUserId
 import com.dmb.user.infra.rate_limiting.EmailRateLimiter
 import com.dmb.user.service.auth.AuthService
 import com.dmb.user.service.EmailVerificationService
@@ -119,7 +120,11 @@ class AuthController(
     fun changePassword(
         @Valid @RequestBody body: ChangePasswordRequest
     ) {
-        // TODO: Extract request user ID and call service
+        passwordResetService.changePassword(
+            userId = requestUserId,
+            oldPassword = body.oldPassword,
+            newPassword = body.newPassword
+        )
     }
 
     @PostMapping("/resend-verification")

@@ -5,6 +5,7 @@ import com.dmb.user.domain.exception.InvalidCredentialsException
 import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.RateLimitException
 import com.dmb.user.domain.exception.SamePasswordException
+import com.dmb.user.domain.exception.UnauthorizedException
 import com.dmb.user.domain.exception.UserAlreadyExistsException
 import com.dmb.user.domain.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
@@ -32,6 +33,15 @@ class AuthExceptionHandler {
         e: RateLimitException
     ) = mapOf(
         "code" to "RATE_LIMIT_EXCEEDED",
+        "message" to e.message
+    )
+
+    @ExceptionHandler(UnauthorizedException::class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    fun onUnauthorized(
+        e: UnauthorizedException
+    ) = mapOf(
+        "code" to "UNAUTHORIZED",
         "message" to e.message
     )
 

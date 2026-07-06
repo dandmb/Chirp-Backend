@@ -18,4 +18,5 @@ dependencies {
 	implementation(libs.spring.boot.starter.data.redis)
 	implementation(libs.spring.boot.starter.data.jpa)
 	runtimeOnly(libs.postgresql)
+	implementation(libs.spring.boot.starter.amqp)
 }

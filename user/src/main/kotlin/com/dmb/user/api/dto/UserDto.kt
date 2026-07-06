@@ -1,7 +1,6 @@
 package com.dmb.user.api.dto
 
-import com.dmb.user.domain.model.UserId
-
+import com.dmb.chirp.domain.type.UserId
 
 data class UserDto(
     val id: UserId,

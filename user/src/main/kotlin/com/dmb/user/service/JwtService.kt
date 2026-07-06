@@ -1,7 +1,7 @@
 package com.dmb.user.service.auth
 
 import com.dmb.user.domain.exception.InvalidTokenException
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys

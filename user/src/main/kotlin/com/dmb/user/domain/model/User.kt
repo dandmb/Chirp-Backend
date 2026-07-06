@@ -2,7 +2,7 @@ package com.dmb.user.domain.model
 
 import java.util.UUID
 
-typealias UserId = UUID
+import com.dmb.chirp.domain.type.UserId
 
 data class User(
     val id: UserId,

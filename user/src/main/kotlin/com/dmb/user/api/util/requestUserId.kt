@@ -1,7 +1,7 @@
 package com.dmb.user.api.util
 
 import com.dmb.user.domain.exception.UnauthorizedException
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import org.springframework.security.core.context.SecurityContextHolder
 
 val requestUserId: UserId

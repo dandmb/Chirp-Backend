@@ -2,7 +2,7 @@ package com.dmb.user.infra.database.repositories
 
 
 import com.dmb.user.infra.database.entities.UserEntity
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository: JpaRepository<UserEntity, UserId> {

@@ -8,7 +8,7 @@ import com.dmb.user.domain.exception.UserAlreadyExistsException
 import com.dmb.user.domain.exception.UserNotFoundException
 import com.dmb.user.domain.model.AuthenticatedUser
 import com.dmb.user.domain.model.User
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import com.dmb.user.infra.database.entities.RefreshTokenEntity
 import com.dmb.user.infra.database.entities.UserEntity
 import com.dmb.user.infra.database.mappers.toUser

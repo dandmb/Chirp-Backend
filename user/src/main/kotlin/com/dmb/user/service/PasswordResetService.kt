@@ -5,7 +5,7 @@ import com.dmb.user.domain.exception.InvalidCredentialsException
 import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.SamePasswordException
 import com.dmb.user.domain.exception.UserNotFoundException
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import com.dmb.user.infra.database.entities.PasswordResetTokenEntity
 import com.dmb.user.infra.database.repositories.PasswordResetTokenRepository
 import com.dmb.user.infra.database.repositories.RefreshTokenRepository

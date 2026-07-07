@@ -1,6 +1,7 @@
 package com.dmb.user.service.auth
 
 
+import com.dmb.chirp.domain.events.user.UserEvent
 import com.dmb.user.domain.exception.EmailNotVerifiedException
 import com.dmb.user.domain.exception.InvalidCredentialsException
 import com.dmb.user.domain.exception.InvalidTokenException
@@ -8,7 +9,8 @@ import com.dmb.user.domain.exception.UserAlreadyExistsException
 import com.dmb.user.domain.exception.UserNotFoundException
 import com.dmb.user.domain.model.AuthenticatedUser
 import com.dmb.user.domain.model.User
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
+import com.dmb.chirp.infra.message_queue.EventPublisher
 import com.dmb.user.infra.database.entities.RefreshTokenEntity
 import com.dmb.user.infra.database.entities.UserEntity
 import com.dmb.user.infra.database.mappers.toUser
@@ -29,7 +31,8 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService,
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val emailVerificationService: EmailVerificationService
+    private val emailVerificationService: EmailVerificationService,
+    private val eventPublisher: EventPublisher
 ) {
 
     @Transactional
@@ -52,6 +55,14 @@ class AuthService(
         ).toUser()
 
         val token = emailVerificationService.createVerificationToken(trimmedEmail)
+        eventPublisher.publish(
+            event = UserEvent.Created(
+                userId = savedUser.id,
+                email = savedUser.email,
+                username = savedUser.username,
+                verificationToken = token.token
+            )
+        )
 
         return savedUser
     }

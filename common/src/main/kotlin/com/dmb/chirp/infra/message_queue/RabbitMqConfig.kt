@@ -4,6 +4,8 @@ package com.dmb.chirp.infra.message_queue
 
 import com.dmb.chirp.domain.events.ChirpEvent
 import com.dmb.chirp.domain.events.user.UserEventConstants
+import org.springframework.amqp.core.Binding
+import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.Queue
 import org.springframework.amqp.core.TopicExchange
 import org.springframework.amqp.rabbit.connection.ConnectionFactory
@@ -61,4 +63,14 @@ class RabbitMqConfig {
         MessageQueues.NOTIFICATION_USER_EVENTS,
         true
     )
+    @Bean
+    fun notificationUserEventsBinding(
+        notificationUserEventsQueue: Queue,
+        userExchange: TopicExchange,
+    ): Binding {
+        return BindingBuilder
+            .bind(notificationUserEventsQueue)
+            .to(userExchange)
+            .with("user.*")
+    }
 }

@@ -2,6 +2,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.mailgun.org
+    username: dmaster@sandbox04fd135c834e497e8338b89a56b92f5d.mailgun.org
 jwt:
   expiration-minutes: 1000
 

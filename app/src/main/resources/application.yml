@@ -1,6 +1,14 @@
 spring:
   application:
     name: chirp
+  data:
+    redis:
+      host: "income-capable-servant-63207.db.redis.io"
+      password: ${REDIS_PASSWORD}
+      username: "default"
+      port: 13115
+      connect-timeout: 5000ms
+      timeout: 2000ms
 
   datasource:
     url: jdbc:postgresql://db.jwttiybmomxlyjxwieii.supabase.co:5432/postgres
@@ -30,12 +38,52 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
         show_sql: true
+
+  mail:
+    port: 587
+    password: ${MAILGUN_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+  rabbitmq:
+    host: kebnekaise.lmq.cloudamqp.com
+    password: ${RABBITMQ_PASSWORD}
+    username: yosvismn
+    ssl:
+      enabled: true
+    virtual-host: yosvismn
+    listener:
+      simple:
+        acknowledge-mode: auto
+        concurrency: 1
+        max-concurrency: 3
+        prefetch: 10
+        default-requeue-rejected: true
+        retry:
+          enabled: true
+          initial-interval: 1000ms
+          max-interval: 10000ms
+          max-attempts: 3
+          multiplier: 2
+
+
 jwt:
   secret: ${JWT_SECRET_BASE64}
 
 chirp:
   email:
+    from: mail@pl-coding.com
     verification:
       expiry-hours: 24
     reset-password:
       expiry-minutes: 30
+nginx:
+  trusted-ips:
+    - "127.0.0.1" # nginx on same machine
+    - "::1" # IPv6 localhost
+    - "172.17.0.0/16" # nginx container IP when using Docker
+    - "10.0.0.5/32" # nginx server IP (if separate machine)

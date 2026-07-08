@@ -1,6 +1,6 @@
 package com.dmb.user.infra.database.entities
 
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

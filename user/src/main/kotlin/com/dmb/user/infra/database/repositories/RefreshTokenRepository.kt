@@ -1,6 +1,6 @@
 package com.dmb.user.infra.database.repositories
 
-import com.dmb.user.domain.model.UserId
+import com.dmb.chirp.domain.type.UserId
 import com.dmb.user.infra.database.entities.RefreshTokenEntity
 import org.springframework.data.jpa.repository.JpaRepository
 

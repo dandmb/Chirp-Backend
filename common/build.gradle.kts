@@ -13,14 +13,25 @@ repositories {
 }
 
 dependencies {
+//    api(libs.kotlin.reflect)
+//    api(libs.jackson.module.kotlin)
+//    testImplementation(kotlin("test"))
     api(libs.kotlin.reflect)
     api(libs.jackson.module.kotlin)
+
+    implementation(libs.spring.boot.starter.amqp)
+    implementation(libs.spring.boot.starter.security)
+
+    implementation(libs.jwt.api)
+    runtimeOnly(libs.jwt.impl)
+    runtimeOnly(libs.jwt.jackson)
+
     testImplementation(kotlin("test"))
 }
 
-kotlin {
-    jvmToolchain(21)
-}
+//kotlin {
+//    jvmToolchain(21)
+//}
 
 tasks.test {
     useJUnitPlatform()

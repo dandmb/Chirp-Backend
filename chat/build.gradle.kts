@@ -19,6 +19,7 @@ dependencies {
     runtimeOnly(libs.postgresql)
     testImplementation(kotlin("test"))
     implementation(libs.spring.boot.starter.validation)
+    implementation(libs.spring.boot.starter.amqp)
 }
 
 kotlin {

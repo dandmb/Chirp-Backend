@@ -4,6 +4,7 @@ import com.dmb.chirp.domain.models.Chat
 import com.dmb.chirp.domain.models.ChatMessage
 import com.dmb.chirp.domain.models.ChatParticipant
 import com.dmb.chirp.infra.database.entities.ChatEntity
+import com.dmb.chirp.infra.database.entities.ChatMessageEntity
 import com.dmb.chirp.infra.database.entities.ChatParticipantEntity
 
 
@@ -35,5 +36,15 @@ fun ChatParticipant.toChatParticipantEntity(): ChatParticipantEntity {
         username = username,
         email = email,
         profilePictureUrl = profilePictureUrl
+    )
+}
+
+fun ChatMessageEntity.toChatMessage(): ChatMessage {
+    return ChatMessage(
+        id = id!!,
+        chatId = chatId,
+        sender = sender.toChatParticipant(),
+        content = content,
+        createdAt = createdAt
     )
 }

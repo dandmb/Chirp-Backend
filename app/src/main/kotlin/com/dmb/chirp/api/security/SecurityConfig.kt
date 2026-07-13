@@ -1,4 +1,4 @@
-package com.dmb.chirp.security
+package com.dmb.chirp.api.security
 
 import com.dmb.user.api.config.JwtAuthFilter
 import jakarta.servlet.DispatcherType

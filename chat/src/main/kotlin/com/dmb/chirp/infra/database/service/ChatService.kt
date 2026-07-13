@@ -1,30 +1,91 @@
 package com.dmb.chirp.infra.database.service
 
 
+import com.dmb.chirp.api.dto.ChatMessageDto
+import com.dmb.chirp.api.mappers.toChatMessageDto
+import com.dmb.chirp.domain.event.ChatParticipantLeftEvent
+import com.dmb.chirp.domain.event.ChatParticipantsJoinedEvent
+import com.dmb.chirp.domain.event.MessageDeletedEvent
+import com.dmb.chirp.domain.events.chat.ChatEvent
 import com.dmb.chirp.domain.exception.ChatNotFoundException
 import com.dmb.chirp.domain.exception.ChatParticipantNotFoundException
 import com.dmb.chirp.domain.exception.ForbiddenException
 import com.dmb.chirp.domain.exception.InvalidChatSizeException
+import com.dmb.chirp.domain.exception.MessageNotFoundException
 import com.dmb.chirp.domain.models.Chat
 import com.dmb.chirp.domain.models.ChatMessage
 import com.dmb.chirp.domain.type.ChatId
+import com.dmb.chirp.domain.type.ChatMessageId
 import com.dmb.chirp.domain.type.UserId
 import com.dmb.chirp.infra.database.entities.ChatEntity
+import com.dmb.chirp.infra.database.entities.ChatMessageEntity
 import com.dmb.chirp.infra.database.mappers.toChat
 import com.dmb.chirp.infra.database.mappers.toChatMessage
 import com.dmb.chirp.infra.database.repositories.ChatMessageRepository
 import com.dmb.chirp.infra.database.repositories.ChatParticipantRepository
 import com.dmb.chirp.infra.database.repositories.ChatRepository
+import com.dmb.chirp.infra.message_queue.EventPublisher
+import org.springframework.cache.annotation.Cacheable
+import org.springframework.context.ApplicationEventPublisher
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
 
 @Service
 class ChatService(
     private val chatRepository: ChatRepository,
     private val chatParticipantRepository: ChatParticipantRepository,
     private val chatMessageRepository: ChatMessageRepository,
+    private val applicationEventPublisher: ApplicationEventPublisher,
 ) {
+
+    fun getChatById(
+        chatId: ChatId,
+        requestUserId: UserId
+    ): Chat? {
+        return chatRepository
+            .findChatById(chatId, requestUserId)
+            ?.toChat(lastMessageForChat(chatId))
+    }
+
+    fun findChatsByUser(userId: UserId): List<Chat> {
+        val chatEntities = chatRepository.findAllByUserId(userId)
+        val chatIds = chatEntities.mapNotNull { it.id }
+        val latestMessages = chatMessageRepository
+            .findLatestMessagesByChatIds(chatIds.toSet())
+            .associateBy { it.chatId }
+
+        return chatEntities
+            .map {
+                it.toChat(lastMessage = latestMessages[it.id]?.toChatMessage())
+            }
+            .sortedByDescending { it.lastActivityAt }
+    }
+
+
+    @Cacheable(
+        value = ["messages"],
+        key = "#chatId",
+        condition = "#before == null && #pageSize <= 50",
+        sync = true
+    )
+    fun getChatMessages(
+        chatId: ChatId,
+        before: Instant?,
+        pageSize: Int
+    ): List<ChatMessageDto> {
+        return chatMessageRepository
+            .findByChatIdBefore(
+                chatId = chatId,
+                before = before ?: Instant.now(),
+                pageable = PageRequest.of(0, pageSize)
+            )
+            .content
+            .asReversed()
+            .map { it.toChatMessage().toChatMessageDto() }
+    }
 
     @Transactional
     fun createChat(
@@ -79,6 +140,13 @@ class ChatService(
             }
         ).toChat(lastMessage)
 
+        applicationEventPublisher.publishEvent(
+            ChatParticipantsJoinedEvent(
+                chatId = chatId,
+                userIds = userIds
+            )
+        )
+
         return updatedChat
     }
 
@@ -102,6 +170,13 @@ class ChatService(
             chat.apply {
                 this.participants = chat.participants - participant
             }
+        )
+
+        applicationEventPublisher.publishEvent(
+            ChatParticipantLeftEvent(
+                chatId = chatId,
+                userId = userId
+            )
         )
     }
 

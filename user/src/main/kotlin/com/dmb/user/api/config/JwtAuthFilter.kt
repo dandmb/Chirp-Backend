@@ -1,6 +1,6 @@
 package com.dmb.user.api.config
 
-import com.dmb.user.service.auth.JwtService
+import com.dmb.chirp.service.JwtService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

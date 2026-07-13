@@ -1,4 +1,4 @@
-package com.dmb.chirp.dto.ws
+package com.dmb.chirp.api.dto.ws
 
 enum class IncomingWebSocketMessageType {
     NEW_MESSAGE

@@ -1,23 +1,23 @@
-package com.dmb.user.service.auth
+package com.dmb.user.service
 
 
 import com.dmb.chirp.domain.events.user.UserEvent
+import com.dmb.chirp.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.EmailNotVerifiedException
 import com.dmb.user.domain.exception.InvalidCredentialsException
-import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.UserAlreadyExistsException
 import com.dmb.user.domain.exception.UserNotFoundException
 import com.dmb.user.domain.model.AuthenticatedUser
 import com.dmb.user.domain.model.User
 import com.dmb.chirp.domain.type.UserId
 import com.dmb.chirp.infra.message_queue.EventPublisher
+import com.dmb.chirp.service.JwtService
 import com.dmb.user.infra.database.entities.RefreshTokenEntity
 import com.dmb.user.infra.database.entities.UserEntity
 import com.dmb.user.infra.database.mappers.toUser
 import com.dmb.user.infra.database.repositories.RefreshTokenRepository
 import com.dmb.user.infra.database.repositories.UserRepository
 import com.dmb.user.infra.security.PasswordEncoder
-import com.dmb.user.service.EmailVerificationService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

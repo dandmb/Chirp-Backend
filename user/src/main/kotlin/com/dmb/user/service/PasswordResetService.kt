@@ -1,10 +1,10 @@
 package com.dmb.user.service
 
 import com.dmb.chirp.domain.events.user.UserEvent
+import com.dmb.chirp.domain.exception.InvalidTokenException
 import com.dmb.chirp.domain.type.UserId
 import com.dmb.chirp.infra.message_queue.EventPublisher
 import com.dmb.user.domain.exception.InvalidCredentialsException
-import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.SamePasswordException
 import com.dmb.user.domain.exception.UserNotFoundException
 import com.dmb.user.infra.database.entities.PasswordResetTokenEntity

@@ -13,7 +13,7 @@ import com.dmb.user.api.mappers.toAuthenticatedUserDto
 import com.dmb.user.api.mappers.toUserDto
 import com.dmb.user.api.util.requestUserId
 import com.dmb.user.infra.rate_limiting.EmailRateLimiter
-import com.dmb.user.service.auth.AuthService
+import com.dmb.user.service.AuthService
 import com.dmb.user.service.EmailVerificationService
 import com.dmb.user.service.PasswordResetService
 import jakarta.validation.Valid

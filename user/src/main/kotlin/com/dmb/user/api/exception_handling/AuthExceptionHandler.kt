@@ -1,8 +1,8 @@
 package com.dmb.user.api.exception_handling
 
+import com.dmb.chirp.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.EmailNotVerifiedException
 import com.dmb.user.domain.exception.InvalidCredentialsException
-import com.dmb.user.domain.exception.InvalidTokenException
 import com.dmb.user.domain.exception.RateLimitException
 import com.dmb.user.domain.exception.SamePasswordException
 import com.dmb.user.domain.exception.UnauthorizedException

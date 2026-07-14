@@ -1,4 +1,4 @@
-package com.dmb.user.domain.exception
+package com.dmb.chirp.domain.exception
 
 import java.lang.RuntimeException
 

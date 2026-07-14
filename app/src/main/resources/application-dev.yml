@@ -15,4 +15,9 @@ chirp:
     url: "http://localhost:8080"
   rate-limit:
     ip:
-      apply-limit: true
+      apply-limit: false
+  web-socket:
+    allowed-origin: "http://localhost:8080"
+logging:
+  level:
+    com.dmb.chirp: DEBUG

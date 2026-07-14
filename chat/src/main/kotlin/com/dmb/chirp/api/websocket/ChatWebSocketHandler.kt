@@ -1,4 +1,4 @@
-package com.dmb.chirp.websocket
+package com.dmb.chirp.api.websocket
 
 import com.dmb.chirp.api.dto.ws.ChatParticipantsChangedDto
 import com.dmb.chirp.api.dto.ws.DeleteMessageDto
@@ -153,6 +153,35 @@ class ChatWebSocketHandler(
                 )
             )
         )
+    }
+
+    override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
+        connectionLock.write {
+            sessions.remove(session.id)?.let { userSession ->
+                val userId = userSession.userId
+
+                userToSessions.compute(userId) { _, sessions ->
+                    sessions
+                        ?.apply { remove(session.id) }
+                        ?.takeIf { it.isNotEmpty() }
+                }
+
+                userChatIds[userId]?.forEach { chatId ->
+                    chatToSessions.compute(chatId) { _, sessions ->
+                        sessions
+                            ?.apply { remove(session.id) }
+                            ?.takeIf { it.isNotEmpty() }
+                    }
+                }
+
+                logger.info("Websocket session closed for user $userId")
+            }
+        }
+    }
+
+    override fun handleTransportError(session: WebSocketSession, exception: Throwable) {
+        logger.error("Transport error for session ${session.id}", exception)
+        session.close(CloseStatus.SERVER_ERROR.withReason("Transport error"))
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
